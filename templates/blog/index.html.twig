@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    {{ form_start(form) }}
+        
+        {% if blogData[0] is defined %}
+            {{ form_row(form.title, {'attr': {'value': blogData[0].title }}) }}
+            {{ form_row(form.blog_data, {'attr': {'value': blogData[0].blogdata }}) }}
+            {{ form_row(form.category, {'attr': {'value': blogData[0].category }}) }}
+            {{ form_row(form.image_path) }}
+        {% else %}
+            {{ form_row(form.title) }}
+            {{ form_row(form.blog_data) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.image_path) }}
+        {% endif %}
+        
+
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

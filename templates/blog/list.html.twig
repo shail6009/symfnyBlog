@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogsController!{% endblock %}
+
+{% block body %}
+<style>
+    .alert alert-success { width: 75% !important; margin: auto !important; }
+</style>
+<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="/bloglist">Blog List</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/profile">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/blog">Add Blog</a>
+        </li>
+        <li class="nav-item" >
+            <a class="nav-link" href="/logout" style="color:#850000">Log Out</a>
+        </li>
+        
+        <li style="margin-left:340px; color:white">
+            <h2><center>Blog List</center></h2>
+        </li>
+        <li style="margin-left:520px; color:white; margin-top:12px">
+            <h6><center>Logged In As : {{profile.username}}</center></h6>
+        </li>
+        
+    </ul>
+</nav>
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+<div class="container" style="max-width: 1500px !important;">
+    
+    <table border="2" width="90%" class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th width="5%">Sr. No</th>
+                <th width="10%">Title</th>
+                <th width="12%">Category</th>
+                <th width="25%">Description</th>
+                <th width="12%">Published On</th>
+                <th width="12%">Image</th>
+                <th width="5%">Action</th>
+            </tr>
+        </thead>
+        {% set srno = 1 %}
+        {% for blog in blogs %}
+        <tr>
+            <td>{{srno}}</td>
+            <td>{{blog.title}}</td>
+            <td>{{blog.category}}</td>
+            <td>{{blog.blogdata}}</td>
+            <td>{{ blog.createdon is empty ? "" : blog.createdon|date("d F Y, H:i:s")}}</td>
+            
+            <td><img src="{{ asset('blogPhotos/'~blog.imagepath) }}" height="100px" width="180px"></td>
+            <td>
+                <a href="/blog/{{blog.id}}" title="Update Blog"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                &nbsp; &nbsp;
+                <a href="/blog/remove/{{ blog.id }}" title="Delete Blog" onclick="return confirm('Are you sure want to delete this blog  ?')"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </td>
+        </tr>
+        {% set srno = srno + 1 %}
+        {% endfor %}
+    </table>
+    {{ knp_pagination_render(blogs) }}
+</div>
+<script>
+    function deleteBlog(blogId){
+        if(confirm("Are you sure want to delete this Blog ?")){
+            
+            $.ajax({
+                url: "/blog/remove/"+blogId,
+                success: function(result){
+        
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}
