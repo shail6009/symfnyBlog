@@ -23,6 +23,7 @@ class BlogController extends AbstractController
      */
     public function index(Request $request,FileUploader $fileUploader,int $blogId = 0): Response
     {
+        // this is main function
         if (!$this->getUser()) {
             return $this->redirectToRoute('login');
         }
