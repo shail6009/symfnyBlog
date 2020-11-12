@@ -74,8 +74,8 @@ class BlogdataRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('b')
                         ->andWhere('b.created_by = :val')
                         ->setParameter('val', $value)
-                        ->getQuery()
-                        ->getResult();
+                        ->getQuery();
+                       // ->getResult();
         
     }
     public function  getBlogById($blogId,$loggedUser)

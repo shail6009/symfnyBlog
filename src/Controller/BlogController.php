@@ -60,7 +60,7 @@ class BlogController extends AbstractController
                     }
                 
                 if($blogId){
-                    #updating data in blog table !!
+                    // Edit Case For Blog ///
                     $entityManager = $this->getDoctrine()->getManager();
                     $blogRepository = $this->getDoctrine()->getRepository(Blogdata::class);
                     $blogs = $blogRepository->findBlog($blogId);
@@ -75,6 +75,7 @@ class BlogController extends AbstractController
                     return $this->redirectToRoute('blogslist');
                 }else{
                     
+                    // ADD CASE FOR BLOG 
                     $date = new \DateTime('@'.strtotime('now')); 
                     $blog->setCreatedBy($loggedInUser);
                     //$blog->setDeleteStatus(0);
@@ -88,7 +89,8 @@ class BlogController extends AbstractController
                     return $this->redirectToRoute('blogslist');
                     }
 
-            }else if($blogId){
+            }
+            if($blogId){
                 $blogRepository = $this->getDoctrine()->getRepository(Blogdata::class);
                 $blogsdata = $blogRepository->getBlogById($blogId,$loggedInUser->getId());
             }
@@ -111,6 +113,7 @@ class BlogController extends AbstractController
         $blogRepository = $this->getDoctrine()->getRepository(Blogdata::class);
         $blogsdata = $blogRepository->getBlogsByUser($this->getUser()->getId());
         $blogdata = $paginator->paginate( $blogsdata,$request->query->getInt('page', 1),2);
+        //dd($blogdata);
         return  $this->render('blog/list.html.twig',[
             'blogs' => $blogdata,
             'profile' => $this->getUser(),
